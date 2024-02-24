@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id           String        @id @default(cuid())
+    email        String        @unique
+    name         String
+    password     String
+    avatar       String?
+    isSuperUser  Boolean       @default(false)
+    createdAt    DateTime      @default(now())
+    updatedAt    DateTime      @default(now()) @updatedAt
+    deletedAt    DateTime?
+    clients      Client[]
+    applications Application[]
+}
+
+model Ticket {
+    id            String       @id @default(cuid())
+    application   Application? @relation(fields: [applicationId], references: [id])
+    applicationId String?
+    value         String?      @unique
+    permission    String?
+    executedAt    DateTime?
+    createdAt     DateTime     @default(now())
+    updatedAt     DateTime     @default(now()) @updatedAt
+}
+
+model Client {
+    id           String            @id @default(cuid())
+    user         User              @relation(fields: [userId], references: [id])
+    userId       String
+    name         String
+    session      String?           @unique
+    createdAt    DateTime          @default(now())
+    updatedAt    DateTime          @default(now()) @updatedAt
+    applications Application[]
+    channels     ClientOnChannel[]
+}
+
+model Application {
+    id          String   @id @default(cuid())
+    user        User     @relation(fields: [userId], references: [id])
+    userId      String
+    client      Client   @relation(fields: [clientId], references: [id])
+    clientId    String
+    name        String
+    publicKey   String?  @unique
+    secretKey   String?  @unique
+    teleGroupId String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @default(now()) @updatedAt
+    tickets     Ticket[]
+}
+
+model Channel {
+    id        String            @id @default(cuid())
+    name      String
+    channelId String
+    createdAt DateTime          @default(now())
+    updatedAt DateTime          @default(now()) @updatedAt
+    files     File[]
+    clients   ClientOnChannel[]
+}
+
+model ClientOnChannel {
+    id        String   @id @default(cuid())
+    client    Client   @relation(fields: [clientId], references: [id])
+    clientId  String
+    channel   Channel  @relation(fields: [clientId], references: [id])
+    channelId String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+}
+
+model File {
+    id            String   @id @default(cuid())
+    channel       Channel  @relation(fields: [channelId], references: [id])
+    channelId     String
+    identifier    String
+    extensionType String
+    extension     String
+    permission    String   @default("public")
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @default(now()) @updatedAt
+}

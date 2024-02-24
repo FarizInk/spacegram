@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  app:
+    container_name: app
+    image: 'farizink/spacegram'
+    build:
+      context: .
+      dockerfile: docker/spacegram/Dockerfile
+    volumes:
+      - ./prisma:/app/prisma
+    command: bun ./build/index.js
+    ports:
+      - '${DOCKER_PORT}:3000'
+    restart: unless-stopped
+  prisma-studio:
+    container_name: prisma-studio
+    image: 'farizink/spacegram'
+    volumes:
+      - ./prisma:/app/prisma
+    command: bunx prisma studio --port 3001
+    restart: unless-stopped
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - '${DOCKER_PRISMA_PORT}:80'
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/htpasswd:/etc/nginx/.htpasswd
+    restart: unless-stopped
