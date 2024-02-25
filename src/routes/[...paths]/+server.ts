@@ -8,23 +8,27 @@ import { deleteFile, getTicket, storeFile, updateFile } from '@/handlers/basicHa
 const app = new Hono().basePath('/api');
 
 if (SENTRY_DSN && SENTRY_DSN !== '') {
-	app.use('*',
+	app.use(
+		'*',
 		sentry({
 			dsn: SENTRY_DSN,
-			environment: NODE_ENV,
+			environment: NODE_ENV
 		})
 	);
 }
 
 if (NODE_ENV === 'development') {
-	app.use(logger())
+	app.use(logger());
 }
 
 app
 	.onError((err, c) => {
-		return c.json({
-			message: `${err}`
-		}, 500)
+		return c.json(
+			{
+				message: `${err}`
+			},
+			500
+		);
 	})
 	.get('/hello', (c) => {
 		return c.json({
@@ -32,9 +36,9 @@ app
 		});
 	})
 	.get('/ticket', getTicket)
-    .post('/store', storeFile)
-    .post('/update/:identifier', updateFile)
-    .delete('/delete/:identifier', deleteFile)
+	.post('/store', storeFile)
+	.post('/update/:identifier', updateFile)
+	.delete('/delete/:identifier', deleteFile);
 
 export const GET: RequestHandler = ({ request }) => app.fetch(request);
 export const POST: RequestHandler = ({ request }) => app.fetch(request);

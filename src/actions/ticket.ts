@@ -11,7 +11,7 @@ export const createTicket = async (applicationId: string | undefined = undefined
 		}
 	});
 
-	deleteExpiredTicket()
+	deleteExpiredTicket();
 
 	return ticketId;
 };
