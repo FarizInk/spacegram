@@ -20,7 +20,6 @@ jobs:
         run: bun run test
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
-        if: steps.auto-commit-action.outputs.changes_detected == 'true'
         with:
           commit_message: Apply formatting changes
       # - name: Push changes
