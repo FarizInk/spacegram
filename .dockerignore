@@ -13,3 +13,12 @@ helm-charts
 .editorconfig
 .idea
 coverage*
+
+.github
+build
+.svelte-kit
+generate-htpasswd.sh
+.eslintignore
+.eslintrc.cjs
+.prettierignore
+.prettierrc
