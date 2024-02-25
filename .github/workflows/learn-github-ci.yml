@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Fix And Test
 
 on:
   push:
@@ -13,6 +13,5 @@ jobs:
 
       # run any `bun` or `bunx` command
       - run: bun install
-      - run: bunx prisma generate
-      - run: bun run build
-      - run: ls
+      - run: bun run test
+      - run: bun run format
