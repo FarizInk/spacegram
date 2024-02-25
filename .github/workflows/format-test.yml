@@ -16,6 +16,11 @@ jobs:
         run: bun run format
       - name: "Test App"
         run: bun run test
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply formatting changes
+          branch: ${{ github.head_ref }}
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
