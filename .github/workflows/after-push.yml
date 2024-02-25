@@ -25,13 +25,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_PORT: 3000
-      ANOTHER_ENV_VAR: 3001
+      DOCKER_PRISMA_PORT: 3001
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
-
     - name: Build and run Docker Compose services
       run: docker-compose up --build
