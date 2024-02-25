@@ -1,9 +1,10 @@
-import type { Config } from "tailwindcss";
+// import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
 import typography from "@tailwindcss/typography";
 
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+export default {
   darkMode: 'class',
   content: ['./src/**/*.{html,js,svelte,ts,css}'],
   theme: {
@@ -70,11 +71,11 @@ module.exports = {
           DEFAULT: "hsl(var(--contrast) / <alpha-value>)"
         }
       },
-			fontFamily: {
-				sans: ["Inter", ...fontFamily.sans],
-				mono: ["Space Mono", ...fontFamily.mono],
-				alt: ["Courier", ...fontFamily.sans]
-			},
+      fontFamily: {
+        sans: ["Inter", ...fontFamily.sans],
+        mono: ["Space Mono", ...fontFamily.mono],
+        alt: ["Courier", ...fontFamily.sans]
+      },
       fontSize: {
         xxs: "10px"
       },
@@ -116,19 +117,19 @@ module.exports = {
   },
   plugins: [
     typography,
-		plugin(function ({ theme, matchUtilities }) {
-			// Square utility
-			matchUtilities(
-				{
-					sq: (value) => ({
-						width: value,
-						height: value
-					})
-				},
-				{
-					values: theme("spacing")
-				}
-			);
-		})
+    plugin(function ({ theme, matchUtilities }) {
+      // Square utility
+      matchUtilities(
+        {
+          sq: (value) => ({
+            width: value,
+            height: value
+          })
+        },
+        {
+          values: theme("spacing")
+        }
+      );
+    })
   ],
-} satisfies Config;
+}
