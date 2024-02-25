@@ -1,4 +1,4 @@
-name: Fix And Test
+name: Format And Test
 
 on:
   push:
@@ -16,3 +16,7 @@ jobs:
         run: bun run format
       - name: "Test App"
         run: bun run test
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
