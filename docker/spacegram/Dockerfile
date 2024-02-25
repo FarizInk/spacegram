@@ -3,7 +3,7 @@ WORKDIR /app
 
 LABEL maintainer="Fariz <me@fariz.dev>"
 
-COPY package.json bun.lockb tsconfig.json svelte.config.js vite.config.ts .env /app/
+COPY package.json bun.lockb tsconfig.json svelte.config.js vite.config.ts tailwind.config.ts postcss.config.js .env /app/
 COPY src /app/src
 COPY prisma /app/prisma
 
