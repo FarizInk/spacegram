@@ -30,6 +30,7 @@ jobs:
       run: |
         echo "DOCKER_PORT=3000" > .env
         echo "DOCKER_PRISMA_PORT=3001" >> .env
+        echo "SENTRY_DSN=" >> .env
       shell: bash
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
