@@ -9,7 +9,7 @@ jobs:
   format-test: 
     runs-on: ubuntu-latest
     permissions:
-      actions: write
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v1
@@ -19,10 +19,10 @@ jobs:
       - name: "Test App"
         run: bun run test
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
+        if: steps.auto-commit-action.outputs.changes_detected == 'true'
         with:
           commit_message: Apply formatting changes
-          branch: ${{ github.head_ref }}
       # - name: Push changes
       #   uses: ad-m/github-push-action@master
       #   with:
