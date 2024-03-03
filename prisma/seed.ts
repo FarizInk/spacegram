@@ -1,4 +1,4 @@
-import { createBcrypt } from '../src/helpers';
+import { createBcrypt } from '../src/utils';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -24,20 +24,20 @@ async function main() {
 		create: {
 			userId: admin.id,
 			name: 'Default Client',
-			session: 'default'
+			session: process.env.DEFAULT_SESSION ?? null
 		}
 	});
 
 	const application = await prisma.application.upsert({
-		where: { secretKey: 'default' },
+		where: { publicKey: 'default' },
 		update: {},
 		create: {
 			userId: admin.id,
 			clientId: client.id,
 			name: 'Default Application',
 			publicKey: 'default',
-			secretKey: 'default',
-			teleGroupId: 'default'
+			secretKey: process.env.DEFAULT_SECRET_KEY ?? 'default',
+			groupId: process.env.DEFAULT_GROUP_ID ?? 'default'
 		}
 	});
 

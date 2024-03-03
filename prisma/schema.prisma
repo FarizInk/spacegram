@@ -17,6 +17,7 @@ model User {
     password     String
     avatar       String?
     isSuperUser  Boolean       @default(false)
+    token        String?
     createdAt    DateTime      @default(now())
     updatedAt    DateTime      @default(now()) @updatedAt
     deletedAt    DateTime?
@@ -28,68 +29,63 @@ model Ticket {
     id            String       @id @default(cuid())
     application   Application? @relation(fields: [applicationId], references: [id])
     applicationId String?
-    value         String?      @unique
     permission    String?
-    executedAt    DateTime?
+    // executeAt: datetime start action
+    executeAt     DateTime?
+    // executeAt: datetime end action, if execute not null === success, u can get info execution time by compare executeAt and successAt
+    successAt     DateTime?
     createdAt     DateTime     @default(now())
     updatedAt     DateTime     @default(now()) @updatedAt
 }
 
 model Client {
-    id           String            @id @default(cuid())
-    user         User              @relation(fields: [userId], references: [id])
+    id           String        @id @default(cuid())
+    user         User          @relation(fields: [userId], references: [id])
     userId       String
     name         String
-    session      String?           @unique
-    createdAt    DateTime          @default(now())
-    updatedAt    DateTime          @default(now()) @updatedAt
+    session      String        @unique
+    createdAt    DateTime      @default(now())
+    updatedAt    DateTime      @default(now()) @updatedAt
     applications Application[]
-    channels     ClientOnChannel[]
 }
 
 model Application {
-    id          String   @id @default(cuid())
-    user        User     @relation(fields: [userId], references: [id])
-    userId      String
-    client      Client   @relation(fields: [clientId], references: [id])
-    clientId    String
-    name        String
-    publicKey   String?  @unique
-    secretKey   String?  @unique
-    teleGroupId String?
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @default(now()) @updatedAt
-    tickets     Ticket[]
-}
-
-model Channel {
-    id        String            @id @default(cuid())
-    name      String
-    channelId String
-    createdAt DateTime          @default(now())
-    updatedAt DateTime          @default(now()) @updatedAt
-    files     File[]
-    clients   ClientOnChannel[]
-}
-
-model ClientOnChannel {
     id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String
     client    Client   @relation(fields: [clientId], references: [id])
     clientId  String
-    channel   Channel  @relation(fields: [clientId], references: [id])
-    channelId String
+    name      String
+    publicKey String?  @unique
+    secretKey String?  @unique
+    // telegram groupId
+    groupId   String   @default("")
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now()) @updatedAt
+    tickets   Ticket[]
+    files     File[]
 }
 
 model File {
-    id            String   @id @default(cuid())
-    channel       Channel  @relation(fields: [channelId], references: [id])
-    channelId     String
-    identifier    String
-    extensionType String
-    extension     String
-    permission    String   @default("public")
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @default(now()) @updatedAt
+    id               String      @id @default(cuid())
+    application      Application @relation(fields: [applicationId], references: [id])
+    applicationId    String
+    extensionType    String?
+    extension        String?
+    size             BigInt?
+    permission       String      @default("public")
+    // identifier is unique by groupId, can change (to short the link by file name), but id not
+    identifier       String?
+    // is chached to tmp folder?
+    isCached         Boolean     @default(false)
+    // telegram groupId
+    groupId          String      @default("")
+    // telegram chatId
+    chatId           String?
+    // telegram uploaded status
+    isUploaded       Boolean?
+    // globalIdentifier is unique, purpose to short the link by file name
+    globalIdentifier String?     @unique
+    createdAt        DateTime    @default(now())
+    updatedAt        DateTime    @default(now()) @updatedAt
 }

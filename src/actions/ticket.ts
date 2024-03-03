@@ -1,19 +1,16 @@
 import { ulid } from 'ulid';
-import { prisma } from '@/helpers';
+import { prisma } from '@/utils';
 
 export const createTicket = async (applicationId: string | undefined = undefined) => {
-	const ticketId = ulid();
-
-	await prisma.ticket.create({
+	const ticket = await prisma.ticket.create({
 		data: {
-			value: ticketId,
 			applicationId
 		}
 	});
 
-	deleteExpiredTicket();
+	await deleteExpiredTicket();
 
-	return ticketId;
+	return ticket;
 };
 
 // Delete expired ticket (less than 1 day ago && not executed)
@@ -26,7 +23,7 @@ export const deleteExpiredTicket = async () => {
 			createdAt: {
 				lte: date.toISOString()
 			},
-			executedAt: null
+			successAt: null
 		}
 	});
 };

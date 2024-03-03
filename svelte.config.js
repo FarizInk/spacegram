@@ -12,6 +12,9 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			'@': path.resolve('./src')
+		},
+		csrf: {
+			checkOrigin: false
 		}
 	}
 };
