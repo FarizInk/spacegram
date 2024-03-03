@@ -9,6 +9,8 @@ services:
       dockerfile: docker/spacegram/Dockerfile
     volumes:
       - ./prisma:/app/prisma
+    environment:
+      - NODE_ENV=production
     command: bun ./build/index.js
     ports:
       - '${DOCKER_PORT}:3000'

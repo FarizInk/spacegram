@@ -1,4 +1,3 @@
-import { API_HASH, API_ID } from '$env/static/private';
 import type { Prisma } from '@prisma/client';
 import { HTTPException } from 'hono/http-exception';
 import { TelegramClient } from 'telegram';
@@ -11,8 +10,8 @@ export type ApplicationWithClient = Prisma.ApplicationGetPayload<{
 export const connect = async (application: ApplicationWithClient) => {
 	const client = new TelegramClient(
 		new StringSession(application.client.session),
-		parseInt(API_ID),
-		API_HASH,
+		parseInt(process.env['API_ID'] ?? ''),
+		process.env['API_HASH'] ?? '',
 		{ connectionRetries: 5 }
 	);
 

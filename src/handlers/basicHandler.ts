@@ -1,4 +1,3 @@
-import { NODE_ENV } from '$env/static/private';
 import { createTicket } from '@/actions/ticket';
 import {
 	checkIdentifier,
@@ -16,11 +15,11 @@ import { HTTPException } from 'hono/http-exception';
 
 export const getTicket = async (c: Context) => {
 	const application = await getAppByQuery(c.req.query());
-
+	
 	if (application) {
 		const ticket = await createTicket(application.id);
 		// FUTURE: how to simple this decission when using typescript interface?
-		if (NODE_ENV === 'development') {
+		if (process.env.NODE_ENV === 'development') {
 			return c.json({
 				ticket: ticket.id,
 				application: application.name,
@@ -29,7 +28,7 @@ export const getTicket = async (c: Context) => {
 		}
 		return c.json({
 			ticket: ticket.id,
-			application: application.name
+			application: application.name,
 		});
 	} else {
 		throw new Error('Application not Found');

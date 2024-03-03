@@ -1,7 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { Hono } from 'hono';
 import { logger } from 'hono/logger';
-import { SENTRY_DSN, NODE_ENV } from '$env/static/private';
 import { sentry } from '@hono/sentry';
 import basicApi from '@/router/basicApi';
 import { defaultErrorHandler } from '@/handlers/errorHandler';
@@ -9,17 +8,17 @@ import { getFileByGlobalIdentifier, getFileByKeySchema } from '@/handlers/fileHa
 
 const app = new Hono();
 
-if (SENTRY_DSN && SENTRY_DSN !== '') {
+if (process.env['SENTRY_DSN'] && process.env['SENTRY_DSN'] !== '') {
 	app.use(
 		'/api',
 		sentry({
-			dsn: SENTRY_DSN,
-			environment: NODE_ENV
+			dsn: process.env['SENTRY_DSN'],
+			environment: process.env.NODE_ENV
 		})
 	);
 }
 
-if (NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
 	app.use(logger());
 }
 

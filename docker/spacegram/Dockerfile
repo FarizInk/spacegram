@@ -17,5 +17,3 @@ RUN bun run build
 FROM base AS release
 WORKDIR /app
 COPY --from=builder /app .
-
-ENV NODE_ENV production

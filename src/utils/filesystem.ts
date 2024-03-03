@@ -1,4 +1,3 @@
-import { TMP_PATH } from '$env/static/private';
 import { mimes } from './mimes';
 import { mkdir } from 'node:fs/promises';
 import type { Application } from '@prisma/client';
@@ -20,7 +19,7 @@ export const saveFile = async (payload: BlobType, id: string, application: Appli
 		extension = typeof payload === 'object' ? 'json' : 'txt';
 		type = typeof payload === 'object' ? 'application/json' : 'text/plain';
 	}
-	const basePath = `${TMP_PATH}/${application.id}`;
+	const basePath = `${process.env['TMP_PATH']}/${application.id}`;
 	const filename = `${id}.${extension}`;
 
 	await mkdir(basePath, { recursive: true });
