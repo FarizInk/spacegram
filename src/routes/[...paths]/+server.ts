@@ -5,9 +5,6 @@ import { SENTRY_DSN, NODE_ENV } from '$env/static/private';
 import { sentry } from '@hono/sentry';
 import basicApi from '@/router/basicApi';
 import { defaultErrorHandler } from '@/handlers/errorHandler';
-import { getFile } from '@/handlers/basicHandler';
-import { connect } from '@/utils/telegram';
-import { getAppByQuery } from '@/utils';
 import { getFileByGlobalIdentifier, getFileByKeySchema } from '@/handlers/fileHandler';
 
 const app = new Hono();

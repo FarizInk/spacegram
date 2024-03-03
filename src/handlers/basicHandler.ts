@@ -91,7 +91,7 @@ export const storeFile = async (c: Context) => {
 
 	file = await createGlobalIdentifier(identifier, file);
 
-	return c.json(file);
+	return c.json({ file });
 };
 
 export const updateFile = async (c: Context) => {

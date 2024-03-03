@@ -1,4 +1,3 @@
-import { ulid } from 'ulid';
 import { prisma } from '@/utils';
 
 export const createTicket = async (applicationId: string | undefined = undefined) => {
