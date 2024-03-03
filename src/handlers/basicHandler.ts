@@ -15,7 +15,7 @@ import { HTTPException } from 'hono/http-exception';
 
 export const getTicket = async (c: Context) => {
 	const application = await getAppByQuery(c.req.query());
-	
+
 	if (application) {
 		const ticket = await createTicket(application.id);
 		// FUTURE: how to simple this decission when using typescript interface?
@@ -28,7 +28,7 @@ export const getTicket = async (c: Context) => {
 		}
 		return c.json({
 			ticket: ticket.id,
-			application: application.name,
+			application: application.name
 		});
 	} else {
 		throw new Error('Application not Found');
